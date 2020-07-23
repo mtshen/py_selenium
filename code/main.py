@@ -8,4 +8,6 @@ from steps.login import loginStep
 
 # 启动一个登陆测试
 loginDriver = driver.startChrome('http://172.16.43.214/static/ark')
-loginStep(loginDriver)
+
+# 启动登录页流程测试
+loginStep.run(loginDriver)

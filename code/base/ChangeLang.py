@@ -1,4 +1,6 @@
-import base.TestBase
+from TestBase import base.TestBase
+from threading import Timer
+
 
 class ChangeLang(TestBase):
   def __init__(self):
@@ -12,6 +14,12 @@ class ChangeLang(TestBase):
 
     resolve()
 
+def prinTime(inc):
+    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    t = Timer(inc, printTime,(inc,))
+    t.start()
+
+printTime(2)
 
 
 # 选择语言, 只有在登陆页面才能进行选择语言控制
