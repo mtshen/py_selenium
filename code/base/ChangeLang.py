@@ -7,10 +7,10 @@ class ChangeLang(TestBase):
     super().__init__()
     self.name = '切换语言'
 
+  def waitReady(self, resolve, reject):
+
     # 只能在登陆页面进行该步骤
     self.appointUrl = 'static/auth-manage/#/login'
-
-  def waitReady(resolve, reject):
 
     resolve()
 

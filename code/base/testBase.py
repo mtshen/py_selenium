@@ -20,21 +20,21 @@ class TestBase:
   # 函数有2个参数,调用 resolve 视为成功, 调用 reject 视为失败
 
   # 等待条件
-  def waitReady(resolve, reject):
+  def waitReady(self, resolve, reject):
     resolve()
 
   # 执行步骤
-  def run(resolve, reject):
+  def run(self, resolve, reject):
     resolve()
 
   # 结束检查是否成功
-  def checkRun(resolve, reject):
+  def checkRun(self, resolve, reject):
     resolve()
 
   # 成功的回调函数
-  def success(resolve, reject):
+  def success(self, resolve, reject):
     resolve()
 
   # 失败的回调函数
-  def fail(resolve, reject):
+  def fail(self, resolve, reject):
     resolve()

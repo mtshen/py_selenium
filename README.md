@@ -20,3 +20,9 @@ ModuleNotFoundError: No module named 'selenium'
 > https://www.cnblogs.com/zhuzhu1214/p/10027609.html
 
 **没有 pycharm 工具的话, 只需要将之前安装的其他版本的python从系统变量中删除即可**
+
+
+##### 使用的插件
+```
+pip install promise
+```
