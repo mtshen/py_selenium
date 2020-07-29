@@ -1,4 +1,4 @@
-from asyncio import asyncio
+import asyncio
 from components.event import Event
 
 class Steps(Event):
@@ -41,6 +41,9 @@ class Steps(Event):
     curStep = self.stepList[stepIndex]
     self.step = curStep
 
+    # 绑定测试窗口
+    curStep.setDriver(self.driver)
+
     # 等待事件成立
     isReady = await self.checkStepWaitReady()
 
@@ -58,7 +61,7 @@ class Steps(Event):
         await curStep.fail()
         return False
 
-    else
+    else:
       # 失败
       await curStep.fail()
       return False

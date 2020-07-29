@@ -1,4 +1,4 @@
-# 载入selenium
+# 载入webdriver
 from selenium import webdriver
 
 # 启动 一个chrome测试页面

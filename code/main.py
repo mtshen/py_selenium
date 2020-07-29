@@ -4,10 +4,19 @@
 # 步骤组只关注一组步骤的运行
 
 import driver
+import asyncio
 from steps.login import loginStep
+
+# 创建异步实例
+loop = asyncio.get_event_loop()
 
 # 启动一个登陆测试
 loginDriver = driver.startChrome('http://172.16.43.214/static/ark')
 
 # 启动登录页流程测试
-loginStep.run(loginDriver)
+loop.run_until_complete(asyncio.wait([
+  loginStep.run(loginDriver)
+]))
+
+# 完成后关闭异步实例
+loop.close()
