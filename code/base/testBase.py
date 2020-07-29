@@ -18,23 +18,24 @@ class TestBase:
     self.readyTimeClockInterval = 0.1
 
   # 函数有2个参数,调用 resolve 视为成功, 调用 reject 视为失败
+  # 本来打算用标准 Promise, 后来换成了 asyncio 提供异步编程
 
   # 等待条件
-  def waitReady(self, resolve, reject):
-    resolve()
+  async def waitReady(self):
+    return True
 
   # 执行步骤
-  def run(self, resolve, reject):
-    resolve()
+  async def run(self):
+    return True
 
   # 结束检查是否成功
-  def checkRun(self, resolve, reject):
-    resolve()
+  async def checkRun(self):
+    return True
 
   # 成功的回调函数
-  def success(self, resolve, reject):
-    resolve()
+  async def success(self):
+    return
 
   # 失败的回调函数
-  def fail(self, resolve, reject):
-    resolve()
+  async def fail(self):
+    return

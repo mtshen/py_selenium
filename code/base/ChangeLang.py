@@ -3,24 +3,16 @@ from threading import Timer
 
 
 class ChangeLang(TestBase):
-  def __init__(self):
+  def __init__(self, option):
     super().__init__()
     self.name = '切换语言'
 
-  def waitReady(self, resolve, reject):
+  async def waitReady(self):
 
     # 只能在登陆页面进行该步骤
     self.appointUrl = 'static/auth-manage/#/login'
 
     resolve()
-
-def prinTime(inc):
-    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    t = Timer(inc, printTime,(inc,))
-    t.start()
-
-printTime(2)
-
 
 # 选择语言, 只有在登陆页面才能进行选择语言控制
 # def selectLang(driver, value):

@@ -9,7 +9,7 @@ class Event():
   # @param eventName 事件名称
   # @param eventName 事件名称
   def on(self, eventName, eventFn):
-    if self.__event[eventName]:
+    if hasattr(self.__event, eventName):
       self.__event[eventName].append(eventFn)
     else:
       self.__event[eventName] = [eventFn]
@@ -35,7 +35,7 @@ class Event():
   # @param eventName 事件名称
   # @param data 触发该事件时传入的数据
   def trigger(self, eventName, data):
-    if self.__event[eventName]:
+    if hasattr(self.__event, eventName):
       events = self.__event[eventName]
       for eventItem in events:
         eventItem(data)
