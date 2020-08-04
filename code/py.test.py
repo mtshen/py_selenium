@@ -1,12 +1,3 @@
-import threading
-import asyncio
-
-async def hello():
-    print('Hello world! (%s)' % threading.currentThread())
-    await asyncio.sleep(1)
-    print('Hello again! (%s)' % threading.currentThread())
-
-loop = asyncio.get_event_loop()
-tasks = [hello(), hello()]
-loop.run_until_complete(asyncio.wait(tasks))
-loop.close()
+import re
+matchObj = re.match('^.+/static/auth-manage/#/login\\??.+$', 'http://localhost:8080/static/auth-manage/#/login1?systemCode=AVALON&r=http%3A%2F%2F172.16.43.170%2Fstatic%2Fark%2F%23%2Fworkstation')
+print(matchObj)

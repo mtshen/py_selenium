@@ -21,8 +21,8 @@ ModuleNotFoundError: No module named 'selenium'
 
 **没有 pycharm 工具的话, 只需要将之前安装的其他版本的python从系统变量中删除即可**
 
-
 ##### 使用的插件
+- asyncio
 ```
-pip install promise
+pip install asyncio
 ```
