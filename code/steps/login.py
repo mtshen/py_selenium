@@ -5,12 +5,14 @@
 
 from steps.main import Steps
 from base.ChangeLang import ChangeLang
+from base.loginForm import loginForm
 
 # 载入切换语言任务
 stakChLan = ChangeLang('English')
+stakLoginForm = loginForm('admin', '111111')
 
 # 创建一个步骤组
-step = Steps([stakChLan])
+step = Steps([stakChLan, stakLoginForm])
 
 
 async def startLoginStep(loginDriver):
