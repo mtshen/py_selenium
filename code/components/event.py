@@ -3,7 +3,6 @@
 # TODO: 可以绑定事件, 但是目前无法触发 events = self.__event[eventName] 无法执行?
 class Event:
     def __init__(self):
-        super().__init__()
         self.__event = {}
 
     # 用来绑定事件

@@ -4,15 +4,17 @@
 # 3. 登陆, 登陆一个正确的用户, 检查页面是否正常跳转
 
 from steps.main import Steps
-from base.ChangeLang import ChangeLang
-from base.loginForm import loginForm
+from base.view.login import ChangeLang, LoginForm, LoginSubmit
 
 # 载入切换语言任务
 stakChLan = ChangeLang('English')
-stakLoginForm = loginForm('admin', '111111')
+# 载入登陆表单任务
+stakLoginForm = LoginForm('admin', '1111111')
+# 载入登陆按钮
+stakSubmitBtn = LoginSubmit()
 
 # 创建一个步骤组
-step = Steps([stakChLan, stakLoginForm])
+step = Steps([stakChLan, stakLoginForm, stakSubmitBtn])
 
 
 async def startLoginStep(loginDriver):
