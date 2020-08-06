@@ -14,7 +14,7 @@ stakLoginForm = LoginForm('admin', '1111111')
 stakSubmitBtn = LoginSubmit()
 
 # 创建一个步骤组
-step = Steps([stakChLan, stakLoginForm, stakSubmitBtn])
+step = Steps([stakChLan, stakLoginForm, stakSubmitBtn], 'test - 01')
 
 
 async def startLoginStep(loginDriver):

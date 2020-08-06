@@ -15,8 +15,8 @@ from steps.login import startLoginStep
 loop = asyncio.get_event_loop()
 
 # 启动一个登陆测试, 可以创建多个实例进行多个步骤组同步进行测试
-# loginDriver = driver.startChrome('172.16.43.170')
-loginDriver = driver.startChrome('localhost:8080')
+loginDriver = driver.startChrome('172.16.43.214')
+# loginDriver = driver.startChrome('localhost:8080')
 
 # 网页最大化
 loginDriver.maximize_window()

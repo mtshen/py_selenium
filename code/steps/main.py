@@ -9,14 +9,16 @@
 
 # TODO: 任务组 Steps 继承自 Event, 因此可以为流程添加自己一些事件的监听
 
+import time
 import asyncio
 from components.event import Event
-
+from components.journal import Journal
 
 class Steps(Event):
-    def __init__(self, steps):
+    def __init__(self, steps, name):
         super().__init__()
-
+        # 步骤组名称
+        self.name = name
         # 测试步骤
         self.stepList = steps
         # 当前执行到的测试步骤
@@ -24,37 +26,57 @@ class Steps(Event):
         # 当前执行的测试步骤实例
         self.step = None
         self.driver = None
+        # 步骤是否成功
+        self.isDone = False
+        # 开始时间
+        self.startTime = None
+        # 结束时间
+        self.endTime = None
+        # 失败原因
+        self.failLog = ''
+        # 载入日志
+        self.journal = Journal(self)
 
     # 启动测试
     async def start(self, driver):
+        self.startTime = time.time()
+
         if driver is None:
-            print("未找到 driver!")
-            return False
+            return self.fail("未找到可用的浏览器实例, 检查为步骤组传入的 driver 是否正确!")
 
         self.driver = driver
 
-        print("准备开始一个测试步骤组, 准备变量")
         stepLen = len(self.stepList) - 1
         curStepIndex = self.stepIndex
         isSuccess = True
 
-        print("开始执行")
         # 循环执行所有的步骤, 直到某步骤失败或者全部执行完成
         while curStepIndex < stepLen and isSuccess:
             curStepIndex = curStepIndex + 1
             isSuccess = await self.__start()
+            # 设置结束时间
+            self.step.endTime = time.time()
+            # 结算执行完成的步骤
+            self.journal.settleStep(self.step)
 
-        return True
+        # 所有步骤全部执行完成
+        if isSuccess:
+            return self.success()
+        else:
+            # 具体失败原因在 __start() 中结算
+            return False
 
     async def __start(self):
         stepIndex = self.stepIndex + 1
         self.stepIndex = stepIndex
-        print("执行第" + str(stepIndex + 1) + "个...")
 
         curStep = self.stepList[stepIndex]
         self.step = curStep
-
-        # 绑定测试窗口
+        # 设置开始时间
+        curStep.startTime = time.time()
+        # 设置当前步骤顺序
+        curStep.index = stepIndex + 1
+        # 绑定浏览器实例
         curStep.setDriver(self.driver)
 
         # 等待事件成立
@@ -68,15 +90,21 @@ class Steps(Event):
 
             # 执行成功与失败
             if isCheckRun:
+                # 成功, 标记成功
+                curStep.isDone = True
                 await curStep.success()
                 return True
             else:
+                # 失败, 标记失败
+                curStep.isDone = False
                 await curStep.fail()
-                return False
+                return self.fail("执行步骤 [%s] 失败" % curStep.name)
 
         else:
-            # 失败
+            # 失败, 标记失败
+            curStep.isDone = False
             await curStep.fail()
+            # 失败结果在 checkStepWaitReady 中结算
             return False
 
     # 检查 当前步骤 是否可以进行
@@ -89,8 +117,7 @@ class Steps(Event):
             # 执行前对参数进行检查
             if curStepReadyTimeNumber < 0 or curStepReadyTimeClockInterval < 0:
                 # 如果参数不合法
-                print("当前步骤设置的时间参数不合法")
-                return False
+                return self.fail("步骤 [%s] 设置的检查时间参数不合法" % curStep.name)
 
             # 开始等待条件判断的成立与失败
             while True:
@@ -107,9 +134,24 @@ class Steps(Event):
                 # 等待时间如果消耗完则直接返回失败
                 curStepReadyTimeNumber = curStepReadyTimeNumber - curStepReadyTimeClockInterval
                 if curStepReadyTimeNumber < 0:
-                    return False
+
+                    # 标记超时
+                    curStep.isOvertime = True
+                    return self.fail("步骤 [%s] 等待超时" % curStep.name)
 
         else:
-            # 走到这里说明程序出错了!
-            print('未找到可用的步骤实例!')
-            return False
+            # 走到这里说明程序出错了
+            return self.fail("未找到可用的步骤实例")
+
+    def fail(self, failLog):
+        self.isDone = False
+        self.failLog = failLog
+        self.endTime = time.time()
+        self.journal.settleSteps()
+        return False
+
+    def success(self):
+        self.isDone = True
+        self.endTime = time.time()
+        self.journal.settleSteps()
+        return True

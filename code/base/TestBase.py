@@ -19,6 +19,21 @@ class TestBase:
         # 测试窗口
         self.driver = None
 
+        # 一些标记数据
+
+        # 运行日志
+        self.logList = []
+        # 标记是否正常完成
+        self.isDone = False
+        # 标记是否是超时
+        self.isOvertime = False
+        # 标记开始执行时间, 从等待条件的成立开始
+        self.startTime = None
+        # 标记结束执行的时间, 无论成功与失败
+        self.endTime = None
+        # 当前步骤的位置
+        self.index = -1
+
     # 函数有2个参数,调用 resolve 视为成功, 调用 reject 视为失败
     # 本来打算用标准 Promise, 后来换成了 asyncio 提供异步编程
 
@@ -46,3 +61,9 @@ class TestBase:
     def setDriver(self, driver):
         self.driver = driver
         return
+
+    def log(self, logText):
+        self.logList.append(logText)
+
+    def getLogText(self):
+        return ''.join(self.logList)
